@@ -62,10 +62,20 @@ button:hover{
 
 #output h2{
     margin: 0;
-    grid-column: 1 / span 2
+}
+.label{
+    display: flex;
+    grid-column: 1 / span 2;
+    align-items: center;
+}
+.square{
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    margin-right: 0.5rem;
 }
 
-#output div{
+#output .tips{
     display: grid;
     gap: 0.5rem;
     flex-direction: column;

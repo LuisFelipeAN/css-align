@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
         <link rel="stylesheet" href="./css/app.css">
-        <title>CSS Aling</title>
+        <title>CSS Align</title>
     </head>
     <body>
       <header>
         <h1>Css Aling</h1>
-        <p>Aling example with flex display</p>
+        <p>Tips to align and position content inside a flex display</p>
       </header>
       
         <div id="app">
@@ -32,22 +32,29 @@
               </div>
             </div>
             <div id="output">
-              <h2>Parent Style</h2>
+              <div class="label">
+                <div class="square" style="background-color: red;"></div>
+                <h2>Parent Style</h2>
+              </div>
+             
               <textarea readonly="true" style="min-height: 200px;">{{parse(parent_style)}}</textarea>
-              <div>
+              <div class="tips">
                 <span>
-                    <strong>justify-content</strong> aling in X axis
+                    <strong>justify-content</strong> align the child alongside X axis
                 </span>
                 <span>
-                  <strong>align-items</strong> aling in Y axis
+                  <strong>align-items</strong> align the child alongside Y axis
                 </span>
               </div>
-              
-              <h2>Child Style</h2>
+              <div class="label">
+                <div class="square" style="background-color: blue;"></div>
+                <h2>Child Style</h2>
+              </div>
+             
               <textarea readonly="true">{{parse(child_style)}}</textarea>
-              <div>
+              <div class="tips">
                 <span>
-                  You can move a child position outside its parent by transfoming it
+                  You can move the child's position outside its parent by transforming it
                 </span>
               </div>
             </div>
@@ -108,7 +115,6 @@
               if(relativeY >= 1){
                 translateY  = 'translateY('+(Math.sign(position.value.y)*(relativeY)*50)+'%)'
               }
-              console.table({translateX,translateY})
               if(relativeX >= 1 || relativeY >= 1){
                 const sep  = relativeX >= 1 && relativeY >= 1? ' ': '';
                 style.transform = translateX+sep+translateY;
@@ -121,7 +127,6 @@
           };
 
           const move = (x, y) =>{
-              console.log({x,y});
               position.value = {x,y};
           };
 
