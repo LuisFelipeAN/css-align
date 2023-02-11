@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <link rel="stylesheet" href="./css/app.css">
+        <title>CSS Aling</title>
+    </head>
+    <body>
+      <header>
+        <h1>Css Aling</h1>
+        <p>Aling example with flex display</p>
+      </header>
+      
+        <div id="app">
+          <span id="x">X</span>
+          <span id="y">Y</span>
+            <div class="container">
+              <div class="parent" :style="parent_style">                
+                <div class="child" :style="child_style">
+                  <div class="actions">
+                    <button @click="move(position.x - 1, position.y - 1)" :disabled="!canMove(position.x - 1, position.y -1)">&#x2196;</button>
+                    <button @click="move(position.x, position.y - 1)" :disabled="!canMove(position.x, position.y - 1)">&#x2191;</button>
+                    <button @click="move(position.x + 1, position.y -1)" :disabled="!canMove(position.x + 1, position.y -1)">&#x2197;</button>
+                    <button @click="move(position.x - 1, position.y)" :disabled="!canMove(position.x - 1, position.y)">&#x2190;</button>
+                    <div></div>
+                    <button @click="move(position.x + 1, position.y)" :disabled="!canMove(position.x + 1, position.y)">&#x2192;</button>
+                    <button @click="move(position.x - 1, position.y + 1)" :disabled="!canMove(position.x - 1, position.y + 1)">&#x2199;</button>
+                    <button @click="move(position.x, position.y + 1)" :disabled="!canMove(position.x, position.y + 1)">&#x2193;</button>
+                    <button @click="move(position.x + 1, position.y + 1)" :disabled="!canMove(position.x + 1, position.y + 1)">&#x2198;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="output">
+              <h2>Parent Style</h2>
+              <textarea readonly="true" style="min-height: 200px;">{{parse(parent_style)}}</textarea>
+              <div>
+                <span>
+                    <strong>justify-content</strong> aling in X axis
+                </span>
+                <span>
+                  <strong>align-items</strong> aling in Y axis
+                </span>
+              </div>
+              
+              <h2>Child Style</h2>
+              <textarea readonly="true">{{parse(child_style)}}</textarea>
+              <div>
+                <span>
+                  You can move a child position outside its parent by transfoming it
+                </span>
+              </div>
+            </div>
+        </div>
+    </body>
+    <script>
+      const { ref, createApp, computed} = Vue
+      createApp({
+        setup() {
+
+          const count = ref(0)
+          const position = ref({'x':0,'y':0});
+
+          const parent_style = computed(()=>{
+              let style = {
+                'height': 'var(--parent-height)',
+                'width': 'var(--parent-width)',
+                'background-color': 'red',
+                'display': 'flex',
+              };
+
+              if(position.value.x <= -1){
+                style['justify-content'] = 'flex-start'
+              }else if(position.value.x >= 1){
+                style['justify-content'] = 'flex-end'
+              }else{
+                style['justify-content'] = 'center'
+
+              }
+
+              if(position.value.y <= -1){
+                style['align-items'] = 'flex-start'
+              }else if(position.value.y >= 1){
+                style['align-items'] = 'flex-end'
+              }else{
+                style['align-items'] = 'center'
+              }
+
+              return style;
+          });
+
+          const child_style = computed(()=>{
+              let style = { 
+                'height': 'var(--child-height)',
+                'width': 'var(--child-width)',
+                'background-color': 'blue'
+              };
+
+              let translateX = '';
+              let translateY = '';
+              const relativeX = Math.abs(position.value.x) - 1;
+              const relativeY = Math.abs(position.value.y) - 1;
+
+              if(relativeX >= 1){
+                translateX  = 'translateX('+(Math.sign(position.value.x)*(relativeX)*50)+'%)'
+              }
+
+              if(relativeY >= 1){
+                translateY  = 'translateY('+(Math.sign(position.value.y)*(relativeY)*50)+'%)'
+              }
+              console.table({translateX,translateY})
+              if(relativeX >= 1 || relativeY >= 1){
+                const sep  = relativeX >= 1 && relativeY >= 1? ' ': '';
+                style.transform = translateX+sep+translateY;
+              }
+              return style;
+          });
+
+          const increment = () => {
+            count.value++;
+          };
+
+          const move = (x, y) =>{
+              console.log({x,y});
+              position.value = {x,y};
+          };
+
+          const canMove = (x, y) =>{
+              return x > -4 && x < 4 && y >-4 && y < 4;
+          };
+
+          const parse = (object) => {
+            return  '{\n'+Object.keys(object).map(key => `    ${key} : ${object[key]};\n`).reduce((str,value)=> str+value,'')+'}'
+          };
+
+          const message = 'Hello Vue!'
+          
+          return {
+            count, 
+            increment,
+            message,
+            move,
+            canMove,
+            position,
+            parent_style, 
+            child_style,
+            parse,
+          }
+        }
+      }).mount('#app')
+
+      </script>
+</html>
