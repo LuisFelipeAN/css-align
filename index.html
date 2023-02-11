@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Tips to align and position content inside a flex display" />
         <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-        <link rel="stylesheet" href="./css/app.css">
+        <link rel="icon" type="image/png" href="./images/favicon.png">
         <title>CSS Align</title>
+        <link rel="stylesheet" href="./css/app.css">
+      
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-QTFGYP94XL"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QTFGYP94XL');
+        </script>
     </head>
     <body>
       <header>
-        <h1>Css Aling</h1>
+        <h1>Css Align</h1>
         <p>Tips to align and position content inside a flex display</p>
       </header>
       
@@ -59,100 +72,99 @@
               </div>
             </div>
         </div>
+        <script>
+          const { ref, createApp, computed} = Vue
+          createApp({
+            setup() {
+    
+              const count = ref(0)
+              const position = ref({'x':0,'y':0});
+    
+              const parent_style = computed(()=>{
+                  let style = {
+                    'height': 'var(--parent-height)',
+                    'width': 'var(--parent-width)',
+                    'background-color': 'red',
+                    'display': 'flex',
+                  };
+    
+                  if(position.value.x <= -1){
+                    style['justify-content'] = 'flex-start'
+                  }else if(position.value.x >= 1){
+                    style['justify-content'] = 'flex-end'
+                  }else{
+                    style['justify-content'] = 'center'
+    
+                  }
+    
+                  if(position.value.y <= -1){
+                    style['align-items'] = 'flex-start'
+                  }else if(position.value.y >= 1){
+                    style['align-items'] = 'flex-end'
+                  }else{
+                    style['align-items'] = 'center'
+                  }
+    
+                  return style;
+              });
+    
+              const child_style = computed(()=>{
+                  let style = { 
+                    'height': 'var(--child-height)',
+                    'width': 'var(--child-width)',
+                    'background-color': 'blue'
+                  };
+    
+                  let translateX = '';
+                  let translateY = '';
+                  const relativeX = Math.abs(position.value.x) - 1;
+                  const relativeY = Math.abs(position.value.y) - 1;
+    
+                  if(relativeX >= 1){
+                    translateX  = 'translateX('+(Math.sign(position.value.x)*(relativeX)*50)+'%)'
+                  }
+    
+                  if(relativeY >= 1){
+                    translateY  = 'translateY('+(Math.sign(position.value.y)*(relativeY)*50)+'%)'
+                  }
+                  if(relativeX >= 1 || relativeY >= 1){
+                    const sep  = relativeX >= 1 && relativeY >= 1? ' ': '';
+                    style.transform = translateX+sep+translateY;
+                  }
+                  return style;
+              });
+    
+              const increment = () => {
+                count.value++;
+              };
+    
+              const move = (x, y) =>{
+                  position.value = {x,y};
+              };
+    
+              const canMove = (x, y) =>{
+                  return x > -4 && x < 4 && y >-4 && y < 4;
+              };
+    
+              const parse = (object) => {
+                return  '{\n'+Object.keys(object).map(key => `    ${key} : ${object[key]};\n`).reduce((str,value)=> str+value,'')+'}'
+              };
+    
+              const message = 'Hello Vue!'
+              
+              return {
+                count, 
+                increment,
+                message,
+                move,
+                canMove,
+                position,
+                parent_style, 
+                child_style,
+                parse,
+              }
+            }
+          }).mount('#app')
+        </script>
     </body>
-    <script>
-      const { ref, createApp, computed} = Vue
-      createApp({
-        setup() {
-
-          const count = ref(0)
-          const position = ref({'x':0,'y':0});
-
-          const parent_style = computed(()=>{
-              let style = {
-                'height': 'var(--parent-height)',
-                'width': 'var(--parent-width)',
-                'background-color': 'red',
-                'display': 'flex',
-              };
-
-              if(position.value.x <= -1){
-                style['justify-content'] = 'flex-start'
-              }else if(position.value.x >= 1){
-                style['justify-content'] = 'flex-end'
-              }else{
-                style['justify-content'] = 'center'
-
-              }
-
-              if(position.value.y <= -1){
-                style['align-items'] = 'flex-start'
-              }else if(position.value.y >= 1){
-                style['align-items'] = 'flex-end'
-              }else{
-                style['align-items'] = 'center'
-              }
-
-              return style;
-          });
-
-          const child_style = computed(()=>{
-              let style = { 
-                'height': 'var(--child-height)',
-                'width': 'var(--child-width)',
-                'background-color': 'blue'
-              };
-
-              let translateX = '';
-              let translateY = '';
-              const relativeX = Math.abs(position.value.x) - 1;
-              const relativeY = Math.abs(position.value.y) - 1;
-
-              if(relativeX >= 1){
-                translateX  = 'translateX('+(Math.sign(position.value.x)*(relativeX)*50)+'%)'
-              }
-
-              if(relativeY >= 1){
-                translateY  = 'translateY('+(Math.sign(position.value.y)*(relativeY)*50)+'%)'
-              }
-              if(relativeX >= 1 || relativeY >= 1){
-                const sep  = relativeX >= 1 && relativeY >= 1? ' ': '';
-                style.transform = translateX+sep+translateY;
-              }
-              return style;
-          });
-
-          const increment = () => {
-            count.value++;
-          };
-
-          const move = (x, y) =>{
-              position.value = {x,y};
-          };
-
-          const canMove = (x, y) =>{
-              return x > -4 && x < 4 && y >-4 && y < 4;
-          };
-
-          const parse = (object) => {
-            return  '{\n'+Object.keys(object).map(key => `    ${key} : ${object[key]};\n`).reduce((str,value)=> str+value,'')+'}'
-          };
-
-          const message = 'Hello Vue!'
-          
-          return {
-            count, 
-            increment,
-            message,
-            move,
-            canMove,
-            position,
-            parent_style, 
-            child_style,
-            parse,
-          }
-        }
-      }).mount('#app')
-
-      </script>
 </html>
