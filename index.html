@@ -24,13 +24,14 @@
     <body>
       <header>
         <h1>Css Align</h1>
-        <p>Tips to align and position content inside a flex display</p>
+        <p>This is a simple tool for practice and learning how to position content inside an HTML element.</p>
+        <p>It contains a few tips to align and position content inside a flex display</p>
       </header>
       
-        <div id="app">
+        <main id="app">
           <span id="x">X</span>
           <span id="y">Y</span>
-            <div class="container">
+            <section  class="container">
               <div class="parent" :style="parent_style">                
                 <div class="child" :style="child_style">
                   <div class="actions">
@@ -46,8 +47,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div id="output">
+            </section>
+            <section id="output">
               <div class="label">
                 <div class="square" style="background-color: red;"></div>
                 <h2>Parent Style</h2>
@@ -73,8 +74,11 @@
                   You can move the child's position outside its parent by transforming it
                 </span>
               </div>
-            </div>
-        </div>
+            </section>
+        </main>
+        <footer>
+          <p>I hope this helps you understand a little more about CSS tips and tricks.</p>
+        </footer>
         <script>
           const { ref, createApp, computed} = Vue
           createApp({

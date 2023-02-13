@@ -32,6 +32,9 @@ body::-webkit-scrollbar {
     display: none;
 }
   
+header p{
+    margin: 0.5rem;
+}
 
 button{
     opacity: 0.3;
